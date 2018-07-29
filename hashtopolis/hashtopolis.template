@@ -1,0 +1,64 @@
+#!/bin/bash
+
+# give user data time to finish
+sleep 60
+
+# MySQL Setup
+mysql -u root -p${mysql_rootpass} -e "create database hashtopolis; GRANT all PRIVILEGES ON hashtopolis.* TO 'hashtopolis'@'localhost' IDENTIFIED BY '${mysql_apppass}';"
+
+# server files
+git clone https://github.com/s3inlc/hashtopolis.git
+cd hashtopolis/src
+sudo mkdir /var/www/hashtopolis
+sudo cp -r * /var/www/hashtopolis
+sudo chown -R www-data:www-data /var/www/hashtopolis
+
+sudo tee /etc/apache2/sites-available/000-default.conf << YOLO
+<VirtualHost *:80>
+        ServerAdmin webmaster@localhost
+        DocumentRoot /var/www/hashtopolis/
+        <Directory /var/www/hashtopolis>
+                Options Indexes FollowSymLinks
+                AllowOverride All
+                Require all granted
+        </Directory>
+
+        ErrorLog \$${APACHE_LOG_DIR}/error.log
+        CustomLog \$${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+YOLO
+
+# restart apache
+sudo systemctl restart apache2
+
+# use web app to configure hashtopolis
+cd ~/
+curl -c cookie.txt http://127.0.0.1/
+sleep 5
+curl -b cookie.txt http://127.0.0.1/install/ -c cookie.txt
+sleep 5
+curl -b cookie.txt http://127.0.0.1/install/index.php?type=install -c cookie.txt
+sleep 5
+curl -b cookie.txt http://127.0.0.1/install/index.php -c cookie.txt
+sleep 5
+curl -b cookie.txt -d "server=localhost&port=3306&user=hashtopolis&pass=${mysql_apppass}&db=hashtopolis&check=Continue" http://127.0.0.1/install/index.php -c cookie.txt
+sleep 5
+curl -b cookie.txt http://127.0.0.1/install/index.php -c cookie.txt
+sleep 5
+curl -b cookie.txt http://127.0.0.1/install/index.php?next=true -c cookie.txt
+sleep 5
+curl -b cookie.txt http://127.0.0.1/install/index.php -c cookie.txt
+sleep 5
+curl -b cookie.txt -d "username=admin&email=test@example.com&password=${web_adminpass}&repeat=${web_adminpass}&create=Create" http://127.0.0.1/install/index.php -c cookie.txt
+sleep 5
+curl -b cookie.txt http://127.0.0.1/install/index.php -c cookie.txt
+
+# remove web server configuration scripts
+sudo rm -r /var/www/hashtopolis/install
+rm -rf ~/hashtopolis
+rm cookie.txt
+
+# setup hashtopolis vouchers
+mysql -u root -p${mysql_rootpass} -e "UPDATE hashtopolis.Config SET value = 1 WHERE item='voucherDeletion'; INSERT INTO hashtopolis.RegVoucher (voucher,time) VALUES ('${voucher_name}', UNIX_TIMESTAMP());"
+
+

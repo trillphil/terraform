@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# indicate that user-data is finished
+touch /tmp/finished-user-data
+
+
