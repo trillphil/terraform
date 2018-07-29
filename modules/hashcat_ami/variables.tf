@@ -26,10 +26,6 @@ variable "security_group_ids" {
   description = "The IDs of the security groups to be applied to the instance"
 }
 
-variable "script" {
-  description = "The name of the script that will be used to provision the instance"
-}
-
 variable "voucher_name" {
   description = "Hashtopolis voucher to register clients to server"
 }

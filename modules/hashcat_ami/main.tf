@@ -4,7 +4,7 @@ data "aws_subnet" "subnet" {
 
 # install dependencies
 data "template_file" "userdata" {
-  template = "${file("${path.module}/dep_install.template")}"
+  template = "${file("${path.module}/user_data.template")}"
 
   vars {
     hostname = "${var.name}"
@@ -48,9 +48,9 @@ resource "aws_instance" "hashcat" {
   # run hashtopolis template
   provisioner "remote-exec" {
     inline = [
-      "chmod u+x ${var.script}",
-      "~/${var.script}",
-      "rm ${var.script}",
+      "chmod u+x /tmp/hashtopolis.sh",
+      "/tmp/hashtopolis.sh",
+      "rm /tmp/hashtopolis.sh",
     ]
   }
 
