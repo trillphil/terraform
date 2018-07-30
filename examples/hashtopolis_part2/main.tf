@@ -6,6 +6,7 @@ data "aws_vpc" "default" {
   id = "${var.vpc_id}"
 }
 
+# the hashcat servers
 module "hashcat" {
   source             = "github.com/trillphil/terraform/modules//hashcat_ami"
   ami                = "${var.hashcat_ami}"
@@ -19,6 +20,7 @@ module "hashcat" {
   count              = 2
 }
 
+# the hashtopolis server
 module "hashtopolis01" {
   source        = "github.com/trillphil/terraform/modules//hashtopolis"
   ami           = "ami-759bc50a"
