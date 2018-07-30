@@ -36,7 +36,7 @@ resource "aws_instance" "hashcat" {
 
   provisioner "file" {
     content     = "${data.template_file.hashtopolis.rendered}"
-    destination = "${var.script}"
+    destination = "/tmp/hashtopolis.sh"
   }
 
   provisioner "remote-exec" {
