@@ -17,7 +17,6 @@ resource "aws_instance" "hashcat" {
   subnet_id              = "${data.aws_subnet.subnet.id}"
   ami                    = "${var.ami}"
   instance_type          = "${var.instance_type}"
-  user_data              = "${data.template_file.userdata.rendered}"
   vpc_security_group_ids = ["${var.security_group_ids}"]
   key_name               = "${var.key_name}"
 
