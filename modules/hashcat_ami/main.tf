@@ -2,15 +2,6 @@ data "aws_subnet" "subnet" {
   id = "${var.subnet}"
 }
 
-# install dependencies
-data "template_file" "userdata" {
-  template = "${file("${path.module}/user_data.template")}"
-
-  vars {
-    hostname = "${var.name}"
-  }
-}
-
 # configure hashcat and hashtopolis client
 data "template_file" "hashtopolis" {
   template = "${file("${path.module}/hashtopolis.template")}"
