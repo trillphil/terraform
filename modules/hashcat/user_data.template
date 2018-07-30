@@ -3,14 +3,9 @@ sudo add-apt-repository ppa:graphics-drivers/ppa -y
 sudo apt-get update
 sudo apt-get install -y unzip p7zip-full linux-image-extra-virtual nvidia-390 nvidia-libopencl1-390 nvidia-opencl-icd-390 python-pip build-essential linux-headers-$$(uname -r) 
 
-#sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
-#echo "deb http://download.mono-project.com/repo/debian wheezy main" | sudo tee /etc/apt/sources.list.d/mono-xamarin.list
-#mono-complete ca-certificates-mono
+
 # install python prerequisites
 sudo pip install requests
-
-# set hostname to easily id the agent
-#sudo hostnamectl set-hostname ${hostname}
 
 # indicate that user-data is finished
 touch /tmp/finished-user-data
