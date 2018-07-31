@@ -47,3 +47,7 @@ variable "web_adminpass" {
 output "hashtopolis_ip" {
   value = "${module.hashtopolis01.hashtopolis_eip}"
 }
+
+output "hashcat_ips" {
+  value = "${module.hashcat.hashcat_private_ips}"
+}

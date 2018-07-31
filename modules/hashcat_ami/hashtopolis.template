@@ -2,18 +2,19 @@
 
 # download hashtopolis client from server
 wget http://${hashtopolis_ip}/agents.php?download=2 -O hashtopolis.zip
-unzip hashtopolis.zip
+mkdir hashtopolis
+unzip hashtopolis.zip -d hashtopolis/
 
 # create and populate initial config
-tee config.json << YOLO
+tee config.json << SWAG
 {
   "url": "http://${hashtopolis_ip}/api/server.php",
   "voucher": "${voucher_name}"
 }
-YOLO
+SWAG
 
 # start the hashtopolis agent in the background
-screen -S hashtopolis -d -m python3 __main__.py &
+screen -S hashtopolis -d -m python3 hashtopolis/ &
 
 # force terraform to slow it's roll
 sleep 5
