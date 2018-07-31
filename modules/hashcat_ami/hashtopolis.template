@@ -5,7 +5,7 @@ wget http://${hashtopolis_ip}/agents.php?download=2 -O hashtopolis.zip
 mkdir hashtopolis
 unzip hashtopolis.zip -d hashtopolis/
 
-# create and populate initial config
+# create and populate initial config file
 tee config.json << YOLO
 {
   "url": "http://${hashtopolis_ip}/api/server.php",
@@ -13,21 +13,16 @@ tee config.json << YOLO
 }
 YOLO
 
-
 # restart on reboot or scale up
 sudo tee /etc/rc.local << SWAG
 #!/bin/sh -e
 #
 # rc.local
 #
-# This script is executed at the end of each multiuser runlevel.
-# Make sure that the script will "exit 0" on success or any other
-# value on error.
-
 su - ubuntu -c "screen -S hashtopolis -d -m python3 hashtopolis/ &"
 exit 0
-
 SWAG
+
 # start the hashtopolis agent in the background
 screen -S hashtopolis -d -m python3 hashtopolis/ &
 
